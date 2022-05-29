@@ -1,4 +1,4 @@
-from . base_generator import BaseGenerator
+from API_Gen.base_generator import BaseGenerator
 
 
 class SanicGenerator(BaseGenerator):

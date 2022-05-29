@@ -1,6 +1,6 @@
 import json
 import os
-from .exceptions import InvalidFrameworkException
+from API_Gen.exceptions import InvalidFrameworkException
 
 
 class BaseGenerator():
