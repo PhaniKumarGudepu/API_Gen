@@ -19,7 +19,9 @@ To use **REST-API-GENERATOR** package to create dummy REST endpoints you have to
 ```
 {  
     "project_dir": "~/project_dir",  
-    "project_name": "Test_project",  
+    "project_name": "Test_project",
+    "api_module_name" : "webapp" 
+    "framework_object": "app",
     "framekwork": "sanic",  
     "host": "0.0.0.0",  
     "port": "1201",  
@@ -49,17 +51,19 @@ To use **REST-API-GENERATOR** package to create dummy REST endpoints you have to
 }  
 ```
 ```
-project_dir  : root directory path of the intended project
-project_name : name of the project
-framekwork   : name of the framework in which the project is created
-host         : host address of the server
-port         : port address of the server
+project_dir         : root directory path of the project (required)
+project_name        : name of the project (required)
+api_module_name     : name of the API module --default : 'webapp'
+framework_object    : name of the framework object --default : 'app'
+framekwork          : name of the framework in which the project is created (required)
+host                : host address of the server (required)
+port                : port address of the server (required)
 
-api_list     : list of all the individual end points
-    method_handler_name : name of a method handler of a particular end-point
-    HTTP_method         : HTTP method type
-    path                : url path
-    response            : sample response
+api_list        : list of all the individual end points
+    method_handler_name : name of a method handler of a particular end-point (required)
+    HTTP_method         : HTTP method type (required)
+    path                : url path (required)
+    response            : sample response (required)
 ```
 
 
@@ -74,8 +78,8 @@ if __name__ == '__main__':
     with open('input.json') as file:
         api_info = json.load(file)
     sp = SanicGenerator(api_info=api_info)
+    # 1. Use create_apis() to generate a new API layer
+    sp.create_apis()
+    # 2. Use add_apis() to add new endpoints to exixting API layer
     sp.create_apis()
 ```
-
-
-
