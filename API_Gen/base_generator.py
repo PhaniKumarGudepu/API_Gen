@@ -1,6 +1,6 @@
 import json
 import os
-from .exceptions import InvalidFrameworkException
+from API_Gen.exceptions import InvalidFrameworkException
 
 
 class BaseGenerator():
@@ -31,7 +31,10 @@ class BaseGenerator():
         self.api_info = api_info
         self.init_file = '__init__.py'
         self.main_file = '__main__.py'
-        self.api_file = 'api.py'
+        if not api_info.get('api_module_name'):
+            self.api_info['api_module_name'] = 'webapp'
+        self.api_file = f"{self.api_info['api_module_name']}.py"
+        self.framework_object = self.api_info.get('framework_object', 'app')
         self.dummy_response_file = 'dummy_response.json'
         self.api_method_placeholder = ''
         self.dummy_response_placeholder = {}
@@ -57,7 +60,6 @@ class BaseGenerator():
         except FileNotFoundError as e:
             print(f'ERROR:- {e.strerror} "{e.filename}"')
         except KeyError as e:
-            # need to remove the index calling
             print(f"Missing key in Json '{e.args[0]}'")
 
     # Function that intializes the main and init files of the project
@@ -73,20 +75,20 @@ class BaseGenerator():
                                         \nwith open(DUMMY_RESPONSE_FILE, 'r') as fi:\
                                         \n    DUMMY_RESPONSE_JSON = json.load(fi)\
                                         \n######\
-                                        \n\napp = {self.api_info['framekwork'].capitalize()}('structure_flask')\n"
+                                        \n\n{self.framework_object} = {self.api_info['framekwork'].capitalize()}('structure_flask')\n"
 
             # intializing the __init__ file
             with open(self.project_path_init, 'w') as file:
                 file.write(self.init_placeholder)
 
         except KeyError as e:
-            # need to remove the index calling
             print(f"Missing key in Json '{e.args[0]}'")
 
     def _write_to_main(self):
         # intializing the __main__.py file
-        self.main_placeholder = f"from . import app\nfrom . import api\
-                                  \n\napp.run(host='{self.api_info['host']}', port={self.api_info['port']})\n"
+        self.main_placeholder = f"from . import {self.framework_object}\
+                                  \nfrom . import {self.api_info['api_module_name']}\
+                                  \n\n{self.framework_object}.run(host='{self.api_info['host']}', port={self.api_info['port']})\n"
 
         # intializing the __main__ file
         with open(self.project_path_main, 'w') as file:
@@ -111,4 +113,11 @@ class BaseGenerator():
         self._write_to_init()
         self._write_to_main()
         self._write_imports_to_api()
+        self._write_methods_to_api()
+
+    def add_apis(self):
+        if self.api_info['framekwork'].lower() not in BaseGenerator.VALID_FRAMEWORKS:
+            raise InvalidFrameworkException(
+                f"'{self.api_info['framekwork']}' is not an acceptable Framework")
+        self._generate_file_paths()
         self._write_methods_to_api()

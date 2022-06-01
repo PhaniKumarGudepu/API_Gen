@@ -1,20 +1,27 @@
-# API_Gen
+# REST-API-GENERATOR
+[![](https://img.shields.io/badge/pypi-v1.0.1-blue)](https://pypi.org/project/REST-API-Generator/)  
+![](https://img.shields.io/badge/python-v3.6%7Cv3.7%7Cv3.8%7Cv3.9-brightgreen)
 
-**API_Gen** is a python tool that helps reduce the time it takes to create dummy REST endpoints during the initial stages of your project.
+**REST-API-GENERATOR** is a python tool that helps reduce the time it takes to create dummy REST endpoints during the initial stages of your project.
+
+## Installation
+` pip install REST-API-Generator `
 
 ## Supported Frameworks
 >1. Sanic
 
 ## How to use it
 
-To use **API_Gen** package to create dummy REST endpoints you have to provide a `python dict` as an input. This `python dict` shall contain all the necessary information of the REST endpoints that you want to build.  
+To use **REST-API-GENERATOR** package to create dummy REST endpoints you have to provide a `python dict` as an input. This `python dict` shall contain all the necessary information of the REST endpoints that you want to build.  
 
 #### *Take a look at the sample input json file below*
 
 ```
 {  
     "project_dir": "~/project_dir",  
-    "project_name": "Test_project",  
+    "project_name": "Test_project",
+    "api_module_name" : "webapp" 
+    "framework_object": "app",
     "framekwork": "sanic",  
     "host": "0.0.0.0",  
     "port": "1201",  
@@ -44,33 +51,35 @@ To use **API_Gen** package to create dummy REST endpoints you have to provide a 
 }  
 ```
 ```
-project_dir  : root directory path of the intended project
-project_name : name of the project
-framekwork   : name of the framework in which the project is created
-host         : host address of the server
-port         : port address of the server
+project_dir         : root directory path of the project (required)
+project_name        : name of the project (required)
+api_module_name     : name of the API module --default : 'webapp'
+framework_object    : name of the framework object --default : 'app'
+framekwork          : name of the framework in which the project is created (required)
+host                : host address of the server (required)
+port                : port address of the server (required)
 
-api_list     : list of all the individual end points
-    method_handler_name : name of a method handler of a particular end-point
-    HTTP_method         : HTTP method type
-    path                : url path
-    response            : sample response
+api_list        : list of all the individual end points
+    method_handler_name : name of a method handler of a particular end-point (required)
+    HTTP_method         : HTTP method type (required)
+    path                : url path (required)
+    response            : sample response (required)
 ```
 
 
 ` Use the following python script to generate dummy end-points `
 
-#### ***Sanic framework***
+#### - ***Sanic framework***
 ```
-from API_Gen.sanic_generator import SanicGenerator
+from API_Gen import SanicGenerator
 import json
 
 if __name__ == '__main__':
     with open('input.json') as file:
         api_info = json.load(file)
     sp = SanicGenerator(api_info=api_info)
+    # 1. Use create_apis() to generate a new API layer
+    sp.create_apis()
+    # 2. Use add_apis() to add new endpoints to exixting API layer
     sp.create_apis()
 ```
-
-
-

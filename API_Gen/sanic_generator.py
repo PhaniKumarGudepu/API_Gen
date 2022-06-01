@@ -1,4 +1,4 @@
-from . base_generator import BaseGenerator
+from API_Gen.base_generator import BaseGenerator
 
 
 class SanicGenerator(BaseGenerator):
@@ -8,7 +8,7 @@ class SanicGenerator(BaseGenerator):
 
     # Intitlaizes the wepapp.py file
     def _write_imports_to_api(self):
-        self.api_import_placeholder = "from . import app\
+        self.api_import_placeholder = f"from . import {self.framework_object}\
                                       \nfrom sanic import json\
                                       \nfrom . import DUMMY_RESPONSE_JSON\n\n"
 
@@ -19,7 +19,7 @@ class SanicGenerator(BaseGenerator):
         try:
             for api in self.api_info['api_list']:
 
-                self.api_method_placeholder += f"@app.{api['HTTP_method'].lower()}('{api['path']}')\
+                self.api_method_placeholder += f"@{self.framework_object}.{api['HTTP_method'].lower()}('{api['path']}')\
                                                  \nasync def {api['method_handler_name']}(request):\
                                                  \n\treturn json(DUMMY_RESPONSE_JSON['{api['method_handler_name']}'])\n\n"
 
