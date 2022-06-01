@@ -1,5 +1,5 @@
 # REST-API-GENERATOR
-[![](https://img.shields.io/badge/pypi-v1.0.0-blue)](https://pypi.org/project/REST-API-Generator/)  
+[![](https://img.shields.io/badge/pypi-v1.0.1-blue)](https://pypi.org/project/REST-API-Generator/)  
 ![](https://img.shields.io/badge/python-v3.6%7Cv3.7%7Cv3.8%7Cv3.9-brightgreen)
 
 **REST-API-GENERATOR** is a python tool that helps reduce the time it takes to create dummy REST endpoints during the initial stages of your project.
