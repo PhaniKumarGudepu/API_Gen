@@ -5,8 +5,7 @@ from API_Gen.exceptions import InvalidFrameworkException
 
 class BaseGenerator():
     '''
-    BaseGenerator class is a parent class to generate files and intializations
-
+    BaseGenerator class is a parent class to generate files and intializations for Sanic, Flask frameworks
     ...
 
     Attributes
@@ -22,10 +21,9 @@ class BaseGenerator():
 
     Methods
     -------
-    says(sound=None)
-        Prints the anima
+  
     '''
-    VALID_FRAMEWORKS = ['sanic']
+    VALID_FRAMEWORKS = ['sanic', 'flask']
 
     def __init__(self, api_info) -> None:
         self.api_info = api_info
@@ -75,7 +73,7 @@ class BaseGenerator():
                                         \nwith open(DUMMY_RESPONSE_FILE, 'r') as fi:\
                                         \n    DUMMY_RESPONSE_JSON = json.load(fi)\
                                         \n######\
-                                        \n\n{self.framework_object} = {self.api_info['framekwork'].capitalize()}('structure_flask')\n"
+                                        \n\n{self.framework_object} = {self.api_info['framekwork'].capitalize()}('__name__')\n"
 
             # intializing the __init__ file
             with open(self.project_path_init, 'w') as file:
