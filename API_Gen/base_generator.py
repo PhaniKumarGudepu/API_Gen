@@ -21,7 +21,7 @@ class BaseGenerator():
 
     Methods
     -------
-  
+
     '''
     VALID_FRAMEWORKS = ['sanic', 'flask']
 
@@ -56,9 +56,9 @@ class BaseGenerator():
                 os.mkdir(self.project_path)
 
         except FileNotFoundError as e:
-            print(f'ERROR:- {e.strerror} "{e.filename}"')
+            raise FileNotFoundError(f'{e.strerror} "{e.filename}"')
         except KeyError as e:
-            print(f"Missing key in Json '{e.args[0]}'")
+            raise KeyError(f"Invalid key in Json '{e.args[0]}' ")
 
     # Function that intializes the main and init files of the project
     def _write_to_init(self):
@@ -80,17 +80,21 @@ class BaseGenerator():
                 file.write(self.init_placeholder)
 
         except KeyError as e:
-            print(f"Missing key in Json '{e.args[0]}'")
+            raise KeyError(f"Invalid key in Json '{e.args[0]}'")
 
     def _write_to_main(self):
-        # intializing the __main__.py file
-        self.main_placeholder = f"from . import {self.framework_object}\
-                                  \nfrom . import {self.api_info['api_module_name']}\
-                                  \n\n{self.framework_object}.run(host='{self.api_info['host']}', port={self.api_info['port']})\n"
+        try:
+            # intializing the __main__.py file
+            self.main_placeholder = f"from . import {self.framework_object}\
+                                      \nfrom . import {self.api_info['api_module_name']}\
+                                      \n\n{self.framework_object}.run(host='{self.api_info['host']}', port={self.api_info['port']})\n"
 
-        # intializing the __main__ file
-        with open(self.project_path_main, 'w') as file:
-            file.write(self.main_placeholder)
+            # intializing the __main__ file
+            with open(self.project_path_main, 'w') as file:
+                file.write(self.main_placeholder)
+
+        except KeyError as e:
+            raise KeyError(f"Invalid key in Json '{e.args[0]}' ")
 
     def _write_to_dummy_response(self, dummy_response_data, read_file=True):
         try:
@@ -104,18 +108,23 @@ class BaseGenerator():
                 dummy_response_data=dummy_response_data, read_file=False)
 
     def create_apis(self):
-        if self.api_info['framekwork'].lower() not in BaseGenerator.VALID_FRAMEWORKS:
-            raise InvalidFrameworkException(
-                f"'{self.api_info['framekwork']}' is not an acceptable Framework")
-        self._generate_file_paths()
-        self._write_to_init()
-        self._write_to_main()
-        self._write_imports_to_api()
-        self._write_methods_to_api()
+        try:
+            if self.api_info['framekwork'].lower() != self.__class__.FRAMEWORK_NAME:
+                raise InvalidFrameworkException(f"'{self.api_info['framekwork']}' is not an acceptable Framework for instance of {self.__class__}")
+            self._generate_file_paths()
+            self._write_to_init()
+            self._write_to_main()
+            self._write_imports_to_api()
+            self._write_methods_to_api()
+        except KeyError as e:
+            print(e.__str__)
+            raise KeyError(f"Invalid key in Json '{e.args[0]}' ")
 
     def add_apis(self):
-        if self.api_info['framekwork'].lower() not in BaseGenerator.VALID_FRAMEWORKS:
-            raise InvalidFrameworkException(
-                f"'{self.api_info['framekwork']}' is not an acceptable Framework")
-        self._generate_file_paths()
-        self._write_methods_to_api()
+        try:
+            if self.api_info['framekwork'].lower() != self.__class__.FRAMEWORK_NAME:
+                raise InvalidFrameworkException(f"'{self.api_info['framekwork']}' is not an acceptable Framework for instance of {self.__class__}")
+            self._generate_file_paths()
+            self._write_methods_to_api()
+        except KeyError as e:
+            raise KeyError(f"Invalid key in Json '{e.args[0]}' ")

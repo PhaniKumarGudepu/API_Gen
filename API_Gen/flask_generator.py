@@ -1,4 +1,5 @@
 from API_Gen.base_generator import BaseGenerator
+from API_Gen.exceptions import InvalidFrameworkException
 
 
 class FlaskGenerator(BaseGenerator):
@@ -16,6 +17,7 @@ class FlaskGenerator(BaseGenerator):
     def _write_methods_to_api(self):
         writes url handlers to api file
     '''
+    FRAMEWORK_NAME = 'flask'
 
     def __init__(self, api_info) -> None:
         super().__init__(api_info)
@@ -45,4 +47,4 @@ class FlaskGenerator(BaseGenerator):
             self._write_to_dummy_response(self.dummy_response_placeholder)
 
         except KeyError as e:
-            print(e)
+            raise KeyError(f"Invalid key in Json '{e.args[0]}' ")
