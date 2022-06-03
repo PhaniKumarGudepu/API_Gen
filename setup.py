@@ -6,7 +6,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
     long_description = "\n" + fh.read()
 
-VERSION = '1.0.1'
+VERSION = '1.1.0'
 DESCRIPTION = 'Package designed to generate REST API layer'
 
 
@@ -23,7 +23,7 @@ setup(
     packages=find_packages(),
     install_requires=[],
     keywords=['python', 'API', 'REST',
-              'API layer', 'dummy API', 'generate', 'sanic'],
+              'API layer', 'dummy API', 'generator', 'sanic','flask','framework'],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",

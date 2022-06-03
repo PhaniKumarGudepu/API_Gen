@@ -1,5 +1,8 @@
 ### REST-API-GENERATOR Changelog  
 
+# v1.1.0  
+#### - Added flask framework feature.
+#### - Updated exception handling. 
 # v1.0.1  
 #### - Created append api's feature.
 #### - Added two new input variables.  

@@ -1,9 +1,10 @@
 from API_Gen.base_generator import BaseGenerator
+from API_Gen.exceptions import InvalidFrameworkException
 
 
-class SanicGenerator(BaseGenerator):
+class FlaskGenerator(BaseGenerator):
     '''
-    SanicGenerator will create end-point handlers for Sanic framework applications
+    FlaskGenerator will create end-point handlers for Flask framework applications
     - Child class of BaseGenerator
     ...
 
@@ -16,26 +17,26 @@ class SanicGenerator(BaseGenerator):
     def _write_methods_to_api(self):
         writes url handlers to api file
     '''
-    FRAMEWORK_NAME = 'sanic'
+    FRAMEWORK_NAME = 'flask'
 
     def __init__(self, api_info) -> None:
         super().__init__(api_info)
 
     def _write_imports_to_api(self):
         self.api_import_placeholder = f"from . import {self.framework_object}\
-                                      \nfrom sanic import json\
-                                      \nfrom . import DUMMY_RESPONSE_JSON\n\n"
+                                        \nfrom flask import request\
+                                        \nfrom . import DUMMY_RESPONSE_JSON\n\n"
 
-        with open(self.project_path_api, 'w') as fi:
-            fi.write(self.api_import_placeholder)
+        with open(self.project_path_api, 'w') as file:
+            file.write(self.api_import_placeholder)
 
     def _write_methods_to_api(self):
         try:
             for api in self.api_info['api_list']:
 
-                self.api_method_placeholder += f"@{self.framework_object}.{api['HTTP_method'].lower()}('{api['path']}')\
-                                                 \nasync def {api['method_handler_name']}(request):\
-                                                 \n\treturn json(DUMMY_RESPONSE_JSON['{api['method_handler_name']}'])\n\n"
+                self.api_method_placeholder += f"@{self.framework_object}.route('{api['path']}',methods=['{api['HTTP_method']}'])\
+                                                 \ndef {api['method_handler_name']}():\
+                                                 \n\treturn DUMMY_RESPONSE_JSON['{api['method_handler_name']}']\n\n"
 
                 self.dummy_response_placeholder[api['method_handler_name']
                                                 ] = api['response']
