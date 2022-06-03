@@ -1,5 +1,7 @@
 ### REST-API-GENERATOR Changelog  
 
+# v1.1.1 
+#### - Updated Readme file
 # v1.1.0  
 #### - Added flask framework feature.
 #### - Updated exception handling. 
