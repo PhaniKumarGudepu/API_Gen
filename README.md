@@ -8,7 +8,8 @@
 ` pip install REST-API-Generator `
 
 ## Supported Frameworks
->1. Sanic
+>1. Flask
+>2. Sanic
 
 ## How to use it
 
@@ -22,7 +23,7 @@ To use **REST-API-GENERATOR** package to create dummy REST endpoints you have to
     "project_name": "Test_project",
     "api_module_name" : "webapp" 
     "framework_object": "app",
-    "framekwork": "sanic",  
+    "framekwork": "framework name",  
     "host": "0.0.0.0",  
     "port": "1201",  
     "api_list": [ 
@@ -83,3 +84,20 @@ if __name__ == '__main__':
     # 2. Use add_apis() to add new endpoints to exixting API layer
     sp.create_apis()
 ```
+
+#### - ***Flask framework***
+```
+from API_Gen import FlaskGenerator
+import json
+
+if __name__ == '__main__':
+    with open('input.json') as file:
+        api_info = json.load(file)
+    sp = SanicGenerator(api_info=api_info)
+    # 1. Use create_apis() to generate a new API layer
+    sp.create_apis()
+    # 2. Use add_apis() to add new endpoints to exixting API layer
+    sp.create_apis()
+```
+
+`Please note that the dummy response for flask framework shoud be either string or dict in input.json`
